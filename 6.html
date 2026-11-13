@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en"> 
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>React Basics</title>
+    <link rel="stylesheet" href="6.css">
+  </head>
+  <body>
+    <div class="js-container"></div>
+  <script src="https://unpkg.com/supersimpledev/react.js"></script>
+  <script src="https://unpkg.com/supersimpledev/react-dom.js"></script>
+  <script src="https://unpkg.com/supersimpledev/babel.js"></script>
+  <script type="text/babel" >
+    function App(){
+      const [count,setCount]=React.useState(0);
+      const buttonRef = React.useRef(null);
+      const intervalRef= React.useRef(null);
+
+      function calculate(){
+        setCount(count+1);
+      }
+
+      function reset(){
+        setCount(0);
+        clearInterval(intervalRef.current);
+        intervalRef.current=null;
+      }
+
+      function automatically(){
+        if(intervalRef.current){
+          return;
+        }
+         intervalRef.current = setInterval(()=>{
+          const buttonEle= buttonRef.current ;
+          if(buttonEle){
+            buttonEle.click();
+          }
+         },1000);
+      }
+
+      function stopAutomatically(){
+        clearInterval(intervalRef.current);
+        intervalRef.current=null;
+      }
+
+      return (
+        <>
+        <button className="count" onClick={calculate} ref={buttonRef}>{count}{count==1?"time":"times"}</button>
+        <button className='reset' onClick={reset}>Reset</button>
+        <button className="auto" onClick={automatically}>AutoMatically Count</button>
+        <button className='stop' onClick={stopAutomatically}>Stop</button>
+        </>
+
+      );
+
+
+    }
+    const container = document.querySelector(".js-container");
+    ReactDOM.createRoot(container).render(<App />)
+  </script>
+  </body>
+
+</html>
